@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>{{ page.product_link }}</id>
+  <title>{{ page.product_title }}</title>
+  <link href="{{ page.product_link }}"/>
+  <link href="{{ page.url | absolute_url }}" rel="self" />
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+{%- for event in page.events %}
+  <entry>
+    <id>{{ page.product_link }}/{{ event.release_name }}/{{ event.type }}</id>
+    <link href="{{ page.product_link }}"/>
+    <updated>{{ event.date | date_to_xmlschema }}</updated>
+    <author><name>endoflife.date</name></author>
+{%- if event.type == "release" %}
+    <title>{{ page.product_label }} {{ event.release_label }} released</title>
+    <summary>{{ page.product_label }} {{ event.release_label }} has been released on {{ event.date | date_to_long_string }}.</summary>
+{% elsif event.type == "eoas" %}
+    <title>{{ page.product_label }} {{ event.release_label }} end of active support</title>
+    <summary>{{ page.product_label }} {{ event.release_label }} is out of active support since {{ event.date | date_to_long_string }}.</summary>
+{% elsif event.type == "eol-7d" %}
+    <title>{{ page.product_label }} {{ event.release_label }} upcoming end of life</title>
+    <summary>{{ page.product_label }} {{ event.release_label }} will be end-of-life on {{ event.date | plus: 7 | date_to_long_string }}.</summary>
+{% elsif event.type == "eol" %}
+    <title>{{ page.product_label }} {{ event.release_label }} end of life</title>
+    <summary>{{ page.product_label }} {{ event.release_label }} is end-of-life since {{ event.date | date_to_long_string }}.</summary>
+{% elsif event.type == "eol" %}
+    <title>{{ page.product_label }} {{ event.release_label }} end of extended support</title>
+    <summary>{{ page.product_label }} {{ event.release_label }} is out of extended support since {{ event.date | date_to_long_string }}.</summary>
+{% endif -%}
+  </entry>
+{% endfor -%}
+</feed>
